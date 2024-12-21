@@ -2,13 +2,13 @@
 
 This project addresses two main optimization problems:
 
-##Problem 1: Task Allocation Optimization
+## Problem 1: Task Allocation Optimization
 
 Description: Assign  tasks to  nodes while minimizing total costs, including task execution and node activation costs. Constraints include node capacities, task requirements, and node activation.
 
 Solution: A Mixed-Integer Linear Programming (MILP) model was implemented using Gurobi Optimizer. Decision variables determine task assignments and node activations. Constraints ensure resource feasibility and optimal task distribution. The objective function minimizes the sum of task and activation costs.
 
-##Problem 2: Resource Allocation Optimization
+## Problem 2: Resource Allocation Optimization
 
 Description: Allocate resources to elements, balancing benefit and cost. Each element's allocation impacts total benefit and cost, modeled by a linear cost function.
 
