@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimizer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #E1F7F5;
+        }
+        .button {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 350px;
+            border-radius: 10px;
+        }
+        #button1 {
+            background-color: #0E46A3;
+            margin-right: 20px;
+        }
+        #button2 {
+            background-color: #011f82;
+        }
+        .button_container {
+            display: flex;
+            flex-direction: row;
+        }
+        h1 {
+            position: absolute;
+            top: 150px;
+            text-align: center;
+            width: 100%;
+            background-color: #011f8238;
+            padding: 50px;
+            
+        }
+        p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        header
+        {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Optimization Problem Solver</h1>
+    
+    
+    <p>Choose the optimizer you want to use:</p>
+    <div class="button_container">
+        
+        <button class="button" id="button1" onclick="window.location.href='/task_optimizer'">Task Allocation Optimizer</button>
+        <button class="button" id="button2" onclick="window.location.href='/ressource_optimizer'">Ressource Allocation Optimizer</button>
+    </div>
+</body>
+</html>

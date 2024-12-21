@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >Task Allocation Optimizer</title>
+    <style>
+        title
+        {
+            color: #0E46A3;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #102c881e;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0E46A3;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #a04574;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 600px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        th:first-child, td:first-child {
+            width: 300px; /* Adjust the width as needed */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+        .table-container {
+            overflow-x: auto; /* Add horizontal scrolling */
+            max-width: 100%;
+        }
+        .solver_button {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+        #solver_button {
+            width: 200px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Task Allocation Optimizer</h1>
+    <form action="/solve_task_optimizer" method="post">
+        <div id="inputs" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Node</th>
+                        <th>Capacity</th>
+                        <th>Activation Cost</th>
+                        <th>Max Load</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic input fields will be added here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="tasks" class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Requirements</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic task requirements will be added here -->
+                </tbody>
+            </table>
+        </div>
+        <div class="button-container">
+            <button type="button" onclick="addInputFields()">Add Node</button>
+            <button type="button" onclick="removeNode()">Remove Node</button>
+            <button type="button" onclick="addTaskColumn()">Add Task </button>
+            <button type="button" onclick="removeTaskColumn()">Remove Task </button>
+            
+        </div>
+        <div class="solver_button">
+            <button id="solver_button" type="submit">Solve</button>
+        </div>
+    </form>
+    <script>
+        let nodeCount = 0;
+        let taskCount = 0;
+
+        function addInputFields() {
+            nodeCount++;
+            const container = document.querySelector('#inputs tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="width: 250px;">Node ${nodeCount}</td>
+                <td><input type="number" name="capacity_${nodeCount}" required></td>
+                <td><input type="number" name="activation_cost_${nodeCount}" required></td>
+                <td><input type="number" name="max_load_${nodeCount}" required></td>
+            `;
+            container.appendChild(row);
+
+            // Add task fields for the new node
+            for (let j = 1; j <= taskCount; j++) {
+                const td = document.createElement('td');
+                td.innerHTML = `<input type="text" name="task_costs_${j}_${nodeCount}" required>`;
+                row.appendChild(td);
+            }
+        }
+
+        function removeNode() {
+            if (nodeCount > 0) {
+                const container = document.querySelector('#inputs tbody');
+                container.removeChild(container.lastChild);
+                nodeCount--;
+            }
+        }
+
+        function addTaskColumn() {
+            taskCount++;
+            const table = document.querySelector('#inputs table');
+            const headerRow = table.querySelector('thead tr');
+            const bodyRows = table.querySelectorAll('tbody tr');
+
+            // Add new header for the task
+            const th = document.createElement('th');
+            th.textContent = `Task ${taskCount} Cost`;
+            headerRow.appendChild(th);
+
+            // Add new input field for each node
+            bodyRows.forEach((row, index) => {
+                const td = document.createElement('td');
+                td.innerHTML = `<input type="text" name="task_costs_${taskCount}_${index + 1}" required>`;
+                row.appendChild(td);
+            });
+
+            // Update the tasks table
+            const taskContainer = document.querySelector('#tasks tbody');
+            const taskRow = document.createElement('tr');
+            taskRow.innerHTML = `
+                <td>Task ${taskCount}</td>
+                <td><input type="text" name="requirements_${taskCount}" required></td>
+            `;
+            taskContainer.appendChild(taskRow);
+            
+        }
+
+        function removeTaskColumn() {
+            if (taskCount > 0) {
+                const table = document.querySelector('#inputs table');
+                const headerRow = table.querySelector('thead tr');
+                const bodyRows = table.querySelectorAll('tbody tr');
+
+                // Remove the last task header
+                headerRow.removeChild(headerRow.lastChild);
+
+                // Remove the last task input field for each node
+                bodyRows.forEach(row => {
+                    row.removeChild(row.lastChild);
+                });
+
+                // Remove the last task requirement row
+                const taskContainer = document.querySelector('#tasks tbody');
+                taskContainer.removeChild(taskContainer.lastChild);
+
+                taskCount--;
+            }
+        }
+    </script>
+</body>
+</html>
